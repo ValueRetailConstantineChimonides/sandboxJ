@@ -1,0 +1,197 @@
+<apex:page sidebar="false" showHeader="false" controller="B2BEventDetailController">
+
+<style type="text/css">
+    .font_format{
+        font-family: Verdana,Helvetica,Sans-Serif;
+        font-size : 11px;
+    }
+    .table_Summary{
+        border-collapse:separate;border-spacing:2px;
+    }
+    
+    .table_Summary_header {
+        text-align :right;font-weight : bold;padding:4px;
+    }
+    .table_Summary_value {
+        text-align :left;padding:4px;
+    }
+
+</style>
+
+<table class = "font_format" width="100%">
+    <tr>
+        <td>
+        
+        <CENTER>
+        
+    <table width="100%" class ="table_Summary">
+        <tr>
+            <td width="50%" class="table_Summary_header">
+                <apex:outputText value="Brand"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <apex:outputText value="{!detailEvent.what.Name}"></apex:outputText>
+            </td>
+        </tr>
+<!--  
+        <tr>
+            <td width="50%" class="table_Summary_header" >
+                <apex:outputText value="Subject"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <apex:outputText value="{!detailEvent.subject}"></apex:outputText>
+            </td>
+        </tr>
+        
+ -->
+        <tr>
+            <td width="50%" class="table_Summary_header" >
+                <apex:outputText value="Department"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <apex:outputText value="{!detailEvent.Event_Department__c}"></apex:outputText>
+            </td>
+        </tr>
+        
+        <tr>
+            <td width="50%" class="table_Summary_header" >
+                <apex:outputText value="Reason"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <apex:outputText value="{!detailEvent.Reason__c}"></apex:outputText>
+            </td>
+        </tr>
+        
+        <tr>
+            <td width="50%" class="table_Summary_header">
+                <apex:outputText value="Brand Contact"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <apex:outputText value="{!detailEvent.Who.Name}"></apex:outputText>
+            </td>
+        </tr>
+        <tr>
+            <td width="50%" class="table_Summary_header">
+                <apex:outputText value="VR Contact"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <apex:outputText value="{!detailEvent.Owner.Name}"></apex:outputText>
+            </td>
+        </tr>
+        <tr>
+            <td width="50%" class="table_Summary_header">
+                <apex:outputText value="Villages discussed"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <apex:outputText value="{!villagesDiscussed}"></apex:outputText>
+            </td>
+        </tr>
+        <tr>
+            <td width="50%" class="table_Summary_header">
+                <apex:outputText value="Location"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <apex:outputText value="{!detailEvent.Location}"></apex:outputText>
+            </td>
+        </tr>
+        <tr>
+            <td width="50%" class="table_Summary_header">
+                <apex:outputText value="Starts"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <!--
+                    <apex:outputText value="{0,date,dd/MM/yyyy HH:mm z}">
+                    <apex:param value="{!detailEvent.StartDateTime}"/>
+                    </apex:outputText>
+                -->
+                <apex:outputText value="{!detailEvent.StartDateTimeString__c}"></apex:outputText>
+                    <apex:outputText value=" " rendered="{!renderTimeZone}" />
+                        <apex:outputText value="{!detailEvent.Location_Time_Zone__c}" rendered="{!renderTimeZone}" />
+                    <apex:outputText value=" " rendered="{!renderTimeZone}" />
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td width="50%" class="table_Summary_header">
+                <apex:outputText value="Ends"></apex:outputText>
+            </td>
+            <td class="table_Summary_value">
+                <!--
+                    <apex:outputText value="{0,date,dd/MM/yyyy HH:mm z}">
+                        <apex:param value="{!detailEvent.EndDateTime}"/>
+                    </apex:outputText>
+                -->
+                    <apex:outputText value="{!detailEvent.EndDateTimeString__c}"></apex:outputText>
+                    <apex:outputText value=" " rendered="{!renderTimeZone}" />
+                        <apex:outputText value="{!detailEvent.Location_Time_Zone__c}" rendered="{!renderTimeZone}" />
+                    <apex:outputText value=" " rendered="{!renderTimeZone}" />                  
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="table_Summary_header" style="padding : 0.5px;text-align:center;background-color: #C0C0C0;">
+                <apex:outputText value="Event Attendees" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <apex:datatable width="50%" value="{!attendees}"  var="attendeeVar">
+                    <apex:column style="align:left">
+                        <apex:facet name="header">
+                            <apex:outputPanel style="align:left">
+                                <apex:outputText style="text-align:left" value="Name"/>
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:outputText value="{!attendeeVar.attendeeName}"/>
+                    </apex:column>
+                    <apex:column style="align:left">
+                        <apex:facet name="header">
+                            <apex:outputPanel style="align:left">
+                                <apex:outputText style="text-align:left" value="Type"/>
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:outputText value="{!attendeeVar.attendeeType}"/>
+                    </apex:column>
+                </apex:datatable>
+            </td>
+        </tr>
+    </table>
+    </CENTER>
+    
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table>
+                 <tr>
+                    <td style="font-weight : bold">
+                        <apex:outputText value="Non-VR Outlet & Full Price Performance" />
+                    </td>
+                    <td>
+                        <apex:outputText value="{!detailEvent.Non_VR_Outlet_Full_Price_Performance__c}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <BR/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-weight : bold">
+                        <apex:outputText value="Description"></apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <apex:outputText value="{!detailEvent.Description}"></apex:outputText>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</apex:page>

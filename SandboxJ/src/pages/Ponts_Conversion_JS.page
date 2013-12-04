@@ -1,0 +1,85 @@
+<apex:page >
+<script language="javascript">
+    function manageTransactionSubmit(warnResponseHidden,hiddenTransDate,totalTransValue,totalPointsBase,totalPointsBonus,activityDate,bonusConvInput){ 
+        transDateHidden=document.getElementById(hiddenTransDate);
+        var nowDate = new Date();
+        transDateHidden.value=nowDate;
+        
+        activityDateEL=document.getElementById(activityDate);
+        var allOK = true;
+        var errorMsg ='Errors !! \n\n';
+        
+        if(!(totalPointsBase !=null && totalPointsBase.length > 0)){
+            allOK = false;
+            errorMsg+=('*Please make sure your base points are computed !'+'\n')
+        }
+        if(!(totalPointsBonus !=null && totalPointsBonus.length > 0)){
+            allOK = false;
+            errorMsg+=('*Please make sure your bonus points are computed !'+'\n')
+        }
+        if(activityDateEL != null){
+            if(!(activityDateEL.value !=null && activityDateEL.value.length > 0)){
+                allOK = false;
+                errorMsg+=('*Please provide the activity date !'+'\n');
+            }
+            if(activityDateEL.value.indexOf(' ')>=0){
+                allOK = false;
+                errorMsg+=('*Please provide the activity date !'+'\n');
+            }
+        }
+        
+        bonusConvInputElement = document.getElementById(bonusConvInput);
+        if(bonusConvInputElement != null){
+            var bonusConvInputValue = bonusConvInputElement.value;
+            allOKBonusValue = true;;
+            if(bonusConvInputValue == null){
+                allOKBonusValue =false;
+            }
+            if(bonusConvInputValue != null &&  bonusConvInputValue.length < 0){
+                allOKBonusValue =false;
+            }else if(bonusConvInputValue != null &&  bonusConvInputValue <= 0){
+                allOKBonusValue =false;
+            }
+            
+            if(allOKBonusValue == false){
+                allOK = false;
+                errorMsg+=('*Please provide a valid Bonus Conversion Value ! '+'\n');
+            }
+            
+        }
+        
+        
+        if(allOK == true){
+            var outMessage='Transaction Summary :-'+'\n\n' ;
+            outMessage+=('Total Transaction  Value :   '+totalTransValue+'\n');
+            outMessage+=('Total Base  Points :  '+totalPointsBase +'\n');
+        
+            if(!(totalPointsBonus == null || totalPointsBonus.length == 0)){
+                var retBonusPoints = totalPointsBonus;
+                if(retBonusPoints >0){
+                    outMessage+=('Total Bonus  Points :  '+retBonusPoints+'\n');
+                }
+            }
+            
+            if(activityDateEL != null){
+                outMessage+=('Activity Date :  '+activityDateEL.value+'\n');
+            }
+            
+            
+            var returnConfirm = confirm(outMessage);
+            warnResponseHiddenEL= document.getElementById(warnResponseHidden);
+            warnResponseHiddenEL.value = returnConfirm;
+            
+            overlay();
+        }else{
+            alert(errorMsg);
+        }
+    } 
+    
+    function disableButton(thisButton){
+        theButtonToDisable=document.getElementById(thisButton);
+        theButtonToDisable.disabled= true;
+        
+    }
+</script>
+</apex:page>

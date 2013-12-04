@@ -1,0 +1,5 @@
+<apex:page standardController="Operation_Task__c" showHeader="false" standardStylesheets="false">
+
+<apex:image url="https://maps.googleapis.com/maps/api/staticmap?markers={! Operation_Task__c.Location__Latitude__s },{! Operation_Task__c.Location__Longitude__s }&zoom=13&size=320x240&sensor=false"/>
+
+</apex:page>

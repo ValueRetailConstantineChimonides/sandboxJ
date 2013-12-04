@@ -1,0 +1,18 @@
+<apex:page showHeader="false" controller="QRCodePrintController" title="Print Barcode Labels">
+	<body onload="window.print()">
+		<style type="text/css">
+			body{
+    			margin-top:0px;
+    			margin-left:20px;
+			}
+	
+			h1 {
+		   		vertical-align:12px;
+			}
+		</style>
+		<h1 ondblclick="window.print()" title="Double-click image to print">{!cmid}</h1>
+		<br/>
+		<img src="http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl={!cmid}&chld=H|0" width="32px" height="32px" alt="QRCode" ondblclick="window.print()" title="Double-click image to print"/>
+		<h1 ondblclick="window.print()" title="Double-click image to print">{!cmid}</h1>
+	</body>
+</apex:page>

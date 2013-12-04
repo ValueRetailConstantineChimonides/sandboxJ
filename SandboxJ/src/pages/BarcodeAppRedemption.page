@@ -1,0 +1,93 @@
+<apex:page controller="BarcodeAppRedemptionController">
+	<script type="text/javascript">
+		function launchPrintLabels()
+		{
+			window.open("/apex/QRCodePrint?cmid={!cmid}");
+		}
+		
+		function launchEditContact()
+		{
+			window.open("/{!cm.Contact.Id}/e");
+		}
+	</script>
+	<apex:form >
+		<apex:pageBlock id="redemptionScreen" title="Redemption Processing">
+			<apex:pageMessages />
+			<apex:pageBlockButtons location="bottom">
+				<apex:commandButton action="{!back}" value="Back To Scan Screen"/>
+				<apex:commandButton action="{!refresh}" value="Refresh" reRender="redemptionScreen"/>
+				<apex:commandButton value="Edit Contact" onClick="launchEditContact();"/>
+				<apex:commandButton action="{!processRedemption}" value="Process Redemption" reRender="redemptionScreen" disabled="{!!enableRedeemButton}"/>
+				<apex:commandButton action="{!updateContact}" value="Print Labels" onClick="launchPrintLabels();" disabled="{!!enablePrintLabels}"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection id="campaignDetails">
+				<apex:facet name="header">
+         			<span style="color:black">
+         				<h3>Campaign Details</h3>
+         			</span>
+     			</apex:facet>
+				<apex:outputField value="{!cm.CM_Unique_ID__c}"/>
+				<br/>
+				<apex:outputField value="{!cm.Campaign.Name}"/>
+				<apex:outputField value="{!cm.Campaign.B2C_Campaign_ID__c}"/>
+				<apex:outputField value="{!cm.Redemption_Count__c}"/>
+				<apex:outputField value="{!cm.Campaign.Campaign_Member_Redemption_Count__c}"/>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection id="contactDetails">
+				<apex:facet name="header">
+         			<span style="color:black">
+         				<h3>Contact Details</h3>
+         			</span>
+     			</apex:facet>
+				<apex:outputField value="{!cm.Contact.LastName}"/>
+				<apex:outputField value="{!cm.Contact.MailingPostalCode}"/>
+				<apex:outputField value="{!cm.Contact.FirstName}"/>
+				<apex:outputField value="{!cm.Contact.MailingStreet}"/>
+				<apex:outputField value="{!cm.Contact.Email}"/>
+				<apex:outputField value="{!cm.Contact.MailingCity}"/>
+				<apex:outputField value="{!cm.Contact.MobilePhone}"/>
+				<apex:outputField value="{!cm.Contact.MailingCountry}"/>
+				<apex:outputField label="Village" value="{!cm.Contact.Account.Name}"/>
+				<apex:outputField value="{!cm.Contact.Mailing_Country_In_English__c}"/>
+			</apex:pageBlockSection>
+			<div style="background-color:rgb(255,90,60);">
+				<apex:pageBlockSection id="requiredFields" rendered="{!!renderMonoContact}">
+					<apex:facet name="header">
+        	 			<span style="color:black">
+         					<h3>Please ensure the boxes below are ticked to perform redemption</h3>
+         				</span>
+	     			</apex:facet>
+    	 			<apex:inputCheckbox label="Customer Over 18 Years Old" value="{!over18}" title="Tick this box to confirm that the customer is over 18 years of age">
+	    	 			<apex:actionSupport event="onclick" rerender="redemptionScreen"/>
+    	 			</apex:inputCheckbox>
+					<apex:inputCheckbox label="Customer Agrees To Sales Tracking" value="{!optIn}" rendered="{!renderOptIn}" title="Tick this box to confirm that the customer agrees to their purchase transaction data being stored on Value Retail databases">
+	    	 			<apex:actionSupport event="onclick" rerender="redemptionScreen"/>
+    	 			</apex:inputCheckbox>
+				</apex:pageBlockSection>
+			</div>
+			<apex:pageBlockSection id="monoRedemptions" rendered="{!renderMonoContact}">
+				<apex:facet name="header">
+         			<span style="color:black">
+         				<h3>Mono Contact Mass Redemption Count</h3>
+         			</span>
+     			</apex:facet>
+				<apex:inputText label="Number Of Redemptions To Process" value="{!monoRedemptionCount}" title="If several mono redemptions are to be processed in this transaction, enter the number here and click Process Redemption"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+
+		<apex:pageBlock id="recentActivity" title="Recent Customer Activity" rendered="{!!recentActivityList.empty}">
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockTable value="{!recentActivityList}" var="custAct">
+					<apex:column value="{!custAct.Activity_Date__c}"/>
+					<apex:column value="{!custAct.Touchpoint_Type__c}"/>
+					<apex:column value="{!custAct.Village__r.Name}"/>
+					<apex:column value="{!custAct.Activity_Type__c}"/>
+					<apex:column value="{!custAct.Activity_Quantity__c}"/>
+					<apex:column value="{!custAct.Activity_Value__c}"/>
+					<apex:column value="{!custAct.Activity_Text__c}"/>
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

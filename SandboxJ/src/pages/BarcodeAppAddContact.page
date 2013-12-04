@@ -1,0 +1,39 @@
+<apex:page controller="BarcodeAppAddContactController">
+	<apex:form >
+		<apex:pageBlock id="contactDetails" title="Add New Contact">
+			<apex:pageMessages />
+			<apex:pageBlockButtons location="bottom" id="buttonSection">
+				<apex:commandButton action="{!backToScan}" value="Back To Scan Screen" immediate="true"/>
+				<apex:commandButton action="{!backToSearch}" value="Back To Search Screen" immediate="true"/>
+				<apex:commandButton action="{!submit}" value="Submit" disabled="{!!enableSubmitButton}" id="subBtn"/>
+				<apex:commandButton action="{!selectFromDuplicates}" value="Select From Duplicates" immediate="true" disabled="{!!duplicateFound}"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="2">
+				<apex:inputField value="{!contact.LastName}" required="true">
+					<apex:actionSupport event="onchange"  rerender="subBtn"/>
+				</apex:inputField>
+				<apex:inputField value="{!contact.FirstName}" required="true">
+					<apex:actionSupport event="onchange"  rerender="subBtn"/>
+				</apex:inputField>
+				<apex:inputField value="{!contact.Email}" required="true">
+					<apex:actionSupport event="onchange"  rerender="subBtn"/>
+				</apex:inputField>
+				<apex:inputField value="{!contact.Gender__c}"/>
+				<apex:inputField value="{!contact.Birthdate}"/>
+				<apex:inputField value="{!contact.I_am_18_years_old_or_more__c}"/>
+				<apex:inputField value="{!contact.Preferred_language_of_communication__c}"/>
+				<apex:inputField value="{!contact.Mailing_Country_In_English__c}"/>
+				<apex:inputField value="{!contact.MailingStreet}"/>
+				<apex:inputField value="{!contact.MailingState}"/>
+				<apex:inputField value="{!contact.MailingCity}"/>
+				<apex:inputField value="{!contact.MailingCountry}"/>
+				<apex:inputField value="{!contact.MailingPostalCode}"/>
+				<apex:inputField value="{!contact.MobilePhone}"/>
+				<apex:inputField value="{!contact.B2C_Password__c}"/>
+				<br/>
+				<apex:outputField label="Village" value="{!contact.AccountId}"/>
+				<apex:outputField label="Lead Source" value="{!contact.Lead_Source_Text__c}"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

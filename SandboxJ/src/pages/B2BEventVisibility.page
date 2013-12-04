@@ -1,0 +1,305 @@
+<apex:page standardController="Event" extensions="B2BEventVisibilityController" 
+                        sidebar="false" showHeader="false" >
+
+<style type="text/css">
+ 
+        body{
+            width  : 100%;
+        
+        }
+
+     .overlayDetail {
+                /* visibility: hidden; */
+                 position: absolute;
+                left:10%;
+                top: 10%;
+                width:95%;
+                height:90%;
+                border:none;
+                argin:0;
+                text-align:right;
+                margin: 0.5; padding: 0.5; overflow: hidden;
+                z-index: 1000;
+                
+        }
+
+        .overlayDetail div {
+                width:85%;
+                height:75%;
+                margin: 1px auto;
+                background-color: #fff;
+                border:1px solid #000;
+                /*text-align:center; */
+                padding:0px;
+                overflow-y:auto;
+        }
+
+
+</style>
+
+
+    <apex:form >
+    <center>
+    
+        <table width="95%">
+            <tr>
+                <td colspan="2">
+                    <table width="100%">
+                        <tr>
+                            <td align="center">
+                                <apex:commandLink value="<< Previous Week" action="{!refreshViewPreviousWeek}" />
+                            </td>
+                            <td align="center" style="font-weight : bold;font-weight:bold">
+                                <apex:inputField value="{!dummyEvent.StartDateTime}" >
+                                    <apex:actionSupport event="onchange"  action="{!refreshView}" />
+                                </apex:inputField>
+                            </td>
+                            <td align="center">
+                                <apex:commandLink value="Next Week >>" action="{!refreshViewNextWeek}" />
+                            </td>
+                            <td width="10%" align="right">
+                                <apex:commandButton value="Refresh" action="{!refreshView}" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                   
+                        <apex:DataTable style="background-color:#F8F8F8 ;border-collapse:collapse;" value="{!renderVillageCategorization}" var="villageCategoryVar" width="100%">
+                            <apex:column width="12%" style="background-color: #C0C0C0;padding : 2px;text-align:left;border:3px solid #FFFFFF;">
+                                <apex:facet name="header">
+                                    <apex:outputText value="" />
+                                </apex:facet>
+                                <apex:outputText value="{!villageCategoryVar}" />
+                            </apex:column>
+                            
+                            <apex:column style="{!backgroundCollorMap[villageCategoryVar]}">
+                                <apex:facet name="header">
+                                    <apex:outputPanel >
+                                        <center>
+                                            <apex:outputText value="Monday" /><BR/>
+                                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                                <apex:param value="{!mondayDate}" />
+                                            </apex:outputText>
+                                        </center>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:datatable value="{!mondayEvents[villageCategoryVar]}" var="mondayEventsVar">
+                                    <apex:column style="padding:0.8px">
+                                        <apex:outputPanel >
+                                            <apex:commandLink style="text-decoration : none;" value="{!mondayEventsVar.What.Name}" action="{!loadAnEventDetail}" >
+                                                <apex:param name="detailEventId" value="{!mondayEventsVar.Id}"/>
+                                            </apex:commandLink>
+                                        </apex:outputPanel>
+                                    </apex:column>
+                                </apex:datatable>
+                            </apex:column>
+                            
+                            <apex:column style="{!backgroundCollorMap[villageCategoryVar]}">
+                                <apex:facet name="header">
+                                    <apex:outputPanel >
+                                        <center>
+                                            <apex:outputText value="Tuesday" /><BR/>
+                                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                                <apex:param value="{!tuesdayDate}" />
+                                            </apex:outputText>
+                                        </center>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:datatable value="{!tuesdayEvents[villageCategoryVar]}" var="tuesdayEventsVar">
+                                    <apex:column style="padding:0.8px">
+                                        <apex:outputPanel >
+                                            <apex:commandLink style="text-decoration : none;" value="{!tuesdayEventsVar.What.Name}" action="{!loadAnEventDetail}" >
+                                                <apex:param name="detailEventId" value="{!tuesdayEventsVar.Id}"/>
+                                            </apex:commandLink>
+                                        </apex:outputPanel>
+                                    </apex:column>
+                                </apex:datatable>
+                            </apex:column>
+                            
+                            <apex:column style="{!backgroundCollorMap[villageCategoryVar]}">
+                                <apex:facet name="header">
+                                    <apex:outputPanel >
+                                        <center>
+                                            <apex:outputText value="Wednesday" /><BR/>
+                                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                                <apex:param value="{!wednesdayDate}" />
+                                            </apex:outputText>
+                                        </center>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:datatable value="{!wednesdayEvents[villageCategoryVar]}" var="wednesdayEventsVar">
+                                    <apex:column style="padding:0.8px">
+                                        <apex:outputPanel >
+                                            <apex:commandLink style="text-decoration : none;" value="{!wednesdayEventsVar.What.Name}" action="{!loadAnEventDetail}" >
+                                                <apex:param name="detailEventId" value="{!wednesdayEventsVar.Id}"/>
+                                            </apex:commandLink>
+                                        </apex:outputPanel>
+                                    </apex:column>
+                                </apex:datatable>
+                            </apex:column>
+                            
+                            <apex:column style="{!backgroundCollorMap[villageCategoryVar]}">
+                                <apex:facet name="header">
+                                    <apex:outputPanel >
+                                        <center>
+                                            <apex:outputText value="Thursday" /><BR/>
+                                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                                <apex:param value="{!thursdayDate}" />
+                                            </apex:outputText>
+                                        </center>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:datatable value="{!thursdayEvents[villageCategoryVar]}" var="thursdayEventsVar">
+                                    <apex:column style="padding:0.8px">
+                                        <apex:outputPanel >
+                                            <apex:commandLink style="text-decoration : none;" value="{!thursdayEventsVar.What.Name}" action="{!loadAnEventDetail}" >
+                                                <apex:param name="detailEventId" value="{!thursdayEventsVar.Id}"/>
+                                            </apex:commandLink>
+                                        </apex:outputPanel>
+                                    </apex:column>
+                                </apex:datatable>
+                            </apex:column>
+                            
+                            <apex:column style="{!backgroundCollorMap[villageCategoryVar]}">
+                                <apex:facet name="header">
+                                    <apex:outputPanel >
+                                        <center>
+                                            <apex:outputText value="Friday" /><BR/>
+                                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                                <apex:param value="{!fridayDate}" />
+                                            </apex:outputText>
+                                        </center>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:datatable value="{!fridayEvents[villageCategoryVar]}" var="fridayEventsVar">
+                                    <apex:column style="padding:0.8px">
+                                        <apex:outputPanel >
+                                            <apex:commandLink style="text-decoration : none;" value="{!fridayEventsVar.What.Name}" action="{!loadAnEventDetail}" >
+                                                <apex:param name="detailEventId" value="{!fridayEventsVar.Id}"/>
+                                            </apex:commandLink>
+                                        </apex:outputPanel>
+                                    </apex:column>
+                                </apex:datatable>
+                            </apex:column>
+                            
+                            <apex:column style="{!backgroundCollorMap[villageCategoryVar]}">
+                                <apex:facet name="header">
+                                    <apex:outputPanel >
+                                        <center>
+                                            <apex:outputText value="Saturday" /><BR/>
+                                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                                <apex:param value="{!saturdayDate}" />
+                                            </apex:outputText>
+                                        </center>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:datatable value="{!saturdayEvents[villageCategoryVar]}" var="saturdayEventsVar">
+                                    <apex:column style="padding:0.8px">
+                                        <apex:outputPanel >
+                                            <apex:commandLink style="text-decoration : none;" value="{!saturdayEventsVar.What.Name}" action="{!loadAnEventDetail}" >
+                                                <apex:param name="detailEventId" value="{!saturdayEventsVar.Id}"/>
+                                            </apex:commandLink>
+                                        </apex:outputPanel>
+                                    </apex:column>
+                                </apex:datatable>
+                            </apex:column>
+                            
+                            <apex:column style="{!backgroundCollorMap[villageCategoryVar]}">
+                                <apex:facet name="header">
+                                    <apex:outputPanel >
+                                        <center>
+                                            <apex:outputText value="Sunday" /><BR/>
+                                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                                <apex:param value="{!sundayDate}" />
+                                            </apex:outputText>
+                                        </center>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:datatable value="{!sundayEvents[villageCategoryVar]}" var="sundayEventsVar">
+                                    <apex:column style="padding:0.8px">
+                                        <apex:outputPanel >
+                                            <apex:commandLink style="text-decoration : none;" value="{!sundayEventsVar.What.Name}" action="{!loadAnEventDetail}" >
+                                                <apex:param name="detailEventId" value="{!sundayEventsVar.Id}"/>
+                                            </apex:commandLink>
+                                        </apex:outputPanel>
+                                    </apex:column>
+                                </apex:datatable>
+                            </apex:column>
+                        </apex:DataTable>
+                        
+                        
+                </td>
+            </tr>
+           
+            
+            <tr>
+                <td align="left" width="12.3%">
+                    <apex:outputText value="Meeting Types" style="font-weight : bold" />
+                </td>
+                <td align="left" style="font-weight : bold">
+                    <apex:inputCheckbox value="{!filterAllSubjectTypes}">
+                                <apex:actionSupport event="onclick"  action="{!clearAllOtherCheckAndFilterByAll}" />
+                            </apex:inputCheckbox> All Meeting
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td align="left" style="font-weight : bold">
+                    
+                                <apex:dataTable id="selectFilterOptions" value="{!filterSubjectTypes}"
+                                        var="filterOptionVar" >
+                                        <apex:column >
+                                            <apex:inputCheckbox value="{!filterOptionVar.selectedForFiltering}">
+                                                    <apex:actionSupport event="onclick"  action="{!uncheckFilterAll}" />
+                                            </apex:inputCheckbox>
+                                            
+                                            <apex:outputText value="{!filterOptionVar.subjectText}">
+                                            </apex:outputText>
+                                        </apex:column>
+                                </apex:dataTable>
+                </td>
+            </tr>
+           
+            <tr>
+                <td colspan="2" align="right" style="font-weight : bold">
+                    <apex:commandButton value="Refresh" action="{!refreshView}" />
+                </td>
+            </tr>
+             <tr>
+                <td colspan="2" align="left">
+                    <br/><br/><br/><br/><br/><br/>
+                    <apex:outputLink style="text-decoration : none; font-style : italic" value="/servlet/servlet.Integration?ic=1&lid=01N200000008nA1">** To view the calendar for B2B events</apex:outputLink>
+                    <apex:outputLink style="text-decoration : underline; font-style : italic" value="/servlet/servlet.Integration?ic=1&lid=01N200000008nA1"> before</apex:outputLink>
+                    <apex:outputLink style="text-decoration : none; font-style : italic" value="/servlet/servlet.Integration?ic=1&lid=01N200000008nA1"> the 29th April, click</apex:outputLink>
+                    <apex:outputLink style="text-decoration : underline; font-style : italic" value="/servlet/servlet.Integration?ic=1&lid=01N200000008nA1"> here</apex:outputLink>
+                    <apex:outputLink style="text-decoration : none; font-style : italic" value="/servlet/servlet.Integration?ic=1&lid=01N200000008nA1"> **</apex:outputLink>
+                </td>
+            </tr>
+        </table>
+
+        <apex:outputPanel styleClass="overlayDetail" rendered="{!renderDetailWindow}">
+                <div>
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align :left; font-weight : bold;">
+                                <apex:outputText value="Event Details"/>
+                            </td>
+                            <td>
+                                <apex:commandLink style="text-decoration : none; font-weight : bold;" value="Close(X)" action="{!closeDetailWindow}"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="width :100%;height:100%;border:none">
+                        <apex:iframe id="detailView" height="1000%" width="95%"  src="{!detailPageSrc}" />
+                    </div>
+            </div>
+        </apex:outputPanel>
+
+    </center>
+
+    </apex:form>
+</apex:page>

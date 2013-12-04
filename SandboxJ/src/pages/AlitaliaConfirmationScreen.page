@@ -1,0 +1,77 @@
+<apex:page controller="AlitaliaConfirmationScreenController">
+  <!-- Begin Default Content REMOVE THIS -->
+  <apex:sectionHeader title="Earn Points Confirmation" />
+  
+    <apex:form >
+        <center>
+        <table  frame ="box" width="50%">
+        <tr>
+            <td colspan ="2">
+                <h1>Points Processing Complete</h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputtext value="MilleMiglia Number" />
+            </td>
+            <td>
+                <apex:outputtext value="{!mmCode}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputtext value="Customer Surname" />
+            </td>
+            <td>
+                <apex:outputtext value="{!customerSurname}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                                
+                <apex:outputtext value="Activity Date" />
+            </td>
+            <td>
+                    <apex:outputText value="{!activityDate}">
+                        
+                     </apex:outputText>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputtext value="Base Points" />
+            </td>
+            <td>
+                <apex:outputtext value="{!totalPointsBase}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputtext value="Bonus Points" rendered="{!renderPointsBonus}"/>
+            </td>
+            <td>
+                <apex:outputtext value="{!totalPointsBonus}" rendered="{!renderPointsBonus}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputtext value="Transaction Reference"/>
+            </td>
+            <td>
+                <apex:outputtext value="{!transactionReference}"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <center>
+                    <apex:commandButton action="{!gotoPointsHome}" value=" - Done - " id="doneOK" />
+                </center>
+            </td>
+        </tr>
+    </table>
+    </center>
+
+    </apex:form>
+    <!-- End Default Content REMOVE THIS -->
+</apex:page>

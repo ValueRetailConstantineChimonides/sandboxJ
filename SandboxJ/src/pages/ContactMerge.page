@@ -1,0 +1,96 @@
+<apex:page >
+<script type="text/javascript">
+var __sfdcSessionId = '{!GETSESSIONID()}';
+</script>
+  <html>
+
+<head>
+
+<style>
+.PageTitle { font-family:tahoma; font-size:12pt; text-decoration: underline; font-weight:bold; }
+.Body { font-family:tahoma; font-size:10pt; text-decoration: none; font-weight:normal; }
+</style>
+
+<!-- <script type="text/javascript" src="/js/functions.js"></script> -->
+<script src="/soap/ajax/21.0/connection.js"></script>
+<script src="/soap/ajax/21.0/apex.js"></script>
+
+<script>
+var t;
+var et = 0;
+var status;
+var setNo;
+
+function timedRun()
+{
+et += 1;
+
+alert(document.getElementById('auto_stop'));
+}
+
+function stopRun()
+{
+clearTimeout(t);
+}
+
+function merge()
+{
+
+done = 'false';
+c_merged = 0;
+
+while (done == 'false')
+{
+
+var result = sforce.apex.execute('ContactMerge' , 'StartMerge', {sets:1});
+
+
+ResultString = new String(result);
+
+ResultArray = ResultString.split(',');
+
+count = parseInt(document.getElementById('progress').value) + parseInt(ResultArray[0]);
+done = ResultArray[1];
+c_merged = parseInt(document.getElementById('c_merged').value) + parseInt(ResultArray[2]);
+status = ResultArray[3];
+setNo = ResultArray[4];
+
+if (status == 'no sets to process') 
+{ 
+et = parseInt(document.getElementById('auto_stop').value); 
+}
+
+document.getElementById('progress').value = count;
+document.getElementById('c_merged').value = c_merged;
+document.getElementById('setNo').value = setNo;
+document.getElementById("MergeProgress").innerHTML = "<span class='Body'>Number of sets processed: " + count + "<p>Contacts merged: " + c_merged + "<p>" + status + "<p>Set number: " + setNo + "</span>";
+}
+}
+
+</script>
+
+</head>
+
+<body>
+
+<span class="PageTitle">
+Contact Merge Utility
+</span>
+
+<div id='MergeProgress'>
+<span class="Body"><p>Number of sets processed: 0</p><p>Contacts merged: 0</p><p>Set number: </p></span>
+</div>
+<span class="body">
+<form>
+<input type="hidden" value="0" id="progress"/>
+<input type="hidden" value="0" id="c_merged"/>
+<input type="hidden" value="0" id="setNo"/>
+<p>Number of sets to process<br/>
+<input type="text" value="10" id="auto_stop"/></p>
+<input type="button" value="Start" onClick="timedRun()"/>
+<input type="button" value="Stop" onClick="stopRun()"/>
+</form>
+</span>
+</body>
+</html>
+</apex:page>

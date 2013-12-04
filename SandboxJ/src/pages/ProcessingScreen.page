@@ -1,0 +1,64 @@
+<apex:page showHeader="false" standardStylesheets="false">
+        <!-- Code for PopUp -->
+        <script language="javascript">
+        var iFrameID = "xmlStatement";
+
+        function overlay() {
+            el = window.top.document.getElementById("overlay");
+            el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+        }
+        
+        </script>
+        <style type="text/css">
+        #overlay {
+                visibility: hidden;
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                width:100%;
+                height:100%;
+                border:none;
+                argin:0;
+                text-align:center;
+                z-index: 1000;
+        }
+
+        #overlay div {
+                width:45%;
+                height:25%;
+                margin: 0px auto;
+                background-color: #fff;
+                border:1px solid #000;
+                text-align:center;
+                padding:0px;
+        }
+
+           .detailFrame{
+               width:100%;
+               height:90%;
+               margin-left:0px;
+               border:none;
+               
+            }
+    </style>
+    
+
+        <div id="overlay">
+            
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                        <h4> 
+                            Processing.... Please wait. 
+                        </h4>
+                </div>
+        </div>
+</apex:page>

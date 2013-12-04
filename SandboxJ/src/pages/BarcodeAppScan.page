@@ -1,0 +1,15 @@
+<apex:page controller="BarcodeAppScanController">
+	<apex:form >
+		<apex:pageBlock id="scanner" title="Barcode Scanner">
+			<apex:pageMessages />
+			<apex:pageBlockButtons location="bottom">
+				<apex:commandButton action="{!clear}" value="Clear" reRender="scanner"/>
+				<apex:commandButton action="{!contactSearch}" value="Manual Search" reRender="scanner"/>
+				<apex:commandButton action="{!save}" value="Next"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection >
+				<apex:inputText label="Scan or Enter Barcode" title="Scan or manually key in the customer barcode" value="{!scannedId}"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

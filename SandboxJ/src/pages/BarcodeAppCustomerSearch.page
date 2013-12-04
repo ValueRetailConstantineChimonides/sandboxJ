@@ -1,0 +1,175 @@
+<apex:page controller="BarcodeAppCustomerSearchController">
+	<apex:form id="form">
+		<apex:pageBlock title="Customer Search" rendered="{!!dataPassedIn}">
+			<apex:pageMessages />
+			<apex:pageBlockButtons location="bottom">
+				<apex:commandButton action="{!back}" value="Back To Scan Screen"/>
+				<apex:commandButton action="{!clear}" value="Clear Search"/>
+				<apex:commandButton action="{!custSearch}" value="Search" reRender="form"  tabindex="7" status="searchStatus"/>
+				<apex:commandButton action="{!addNew}" value="Add New"/>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection columns="3">
+				<apex:inputText id="firstName" label="First Name" value="{!searchFirstName}" tabindex="1"/>
+				<apex:inputText id="lastName" label="Last Name" value="{!searchLastName}" tabindex="2"/>
+				<apex:inputText id="email" label="Email" value="{!searchEmail}"  tabindex="3"/>
+				<apex:inputText id="postcode" label="Postal Code" value="{!searchPostcode}" tabindex="4"/>
+				<apex:inputText id="mailingStreet" label="Mailing Street" value="{!searchMailStreet}" tabindex="5"/>
+				<apex:inputText id="vrNumber" label="VR Number" value="{!searchVRNumber}" tabindex="6"/>
+				<apex:outputPanel style="color:#4AA02C;font-weight:bold">
+			    	<apex:actionStatus id="searchStatus" startText="Searching..." stopText="Enter customer details and click Search..."/>
+				</apex:outputPanel>
+				<apex:inputCheckbox id="exactMatch" label="Use Exact Matching" value="{!searchExactMatching}" title="Tick to search for exact matches only, untick to include similar matches in search results" tabindex="7"/>
+				<apex:pageBlockSectionItem />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageBlock id="custSearchResults" title="Customer Search Results" rendered="{!renderCustSearch}">
+			<apex:pageMessages />
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockTable value="{!custSearchResults2}" var="thisCust">
+					<apex:column headerValue="LastName">
+    					<apex:actionSupport action="{!selectRow}" event="onclick" rerender="form" status="csStatus">
+      						<apex:param name="selContId" value="{!thisCust.Id}" assignTo="{!selectedId}" />
+      						<apex:param name="selName" value="{!thisCust.Name}" assignTo="{!selectedName}" />
+      						<apex:param name="selVRNumber" value="{!thisCust.User_Login_ID__c}" assignTo="{!selectedVRNumber}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCust.LastName}"/>
+    				</apex:column>
+					<apex:column headerValue="First Name">
+    					<apex:actionSupport action="{!selectRow}" event="onclick" rerender="form" status="csStatus">
+      						<apex:param name="selContId" value="{!thisCust.Id}" assignTo="{!selectedId}" />
+      						<apex:param name="selName" value="{!thisCust.Name}" assignTo="{!selectedName}" />
+      						<apex:param name="selVRNumber" value="{!thisCust.User_Login_ID__c}" assignTo="{!selectedVRNumber}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCust.FirstName}"/>
+    				</apex:column>
+					<apex:column headerValue="Village Name">
+    					<apex:actionSupport action="{!selectRow}" event="onclick" rerender="form" status="csStatus">
+      						<apex:param name="selContId" value="{!thisCust.Id}" assignTo="{!selectedId}" />
+      						<apex:param name="selName" value="{!thisCust.Name}" assignTo="{!selectedName}" />
+      						<apex:param name="selVRNumber" value="{!thisCust.User_Login_ID__c}" assignTo="{!selectedVRNumber}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCust.Account.Name}"/>
+    				</apex:column>
+					<apex:column headerValue="VR Number">
+    					<apex:actionSupport action="{!selectRow}" event="onclick" rerender="form" status="csStatus">
+      						<apex:param name="selContId" value="{!thisCust.Id}" assignTo="{!selectedId}" />
+      						<apex:param name="selName" value="{!thisCust.Name}" assignTo="{!selectedName}" />
+      						<apex:param name="selVRNumber" value="{!thisCust.User_Login_ID__c}" assignTo="{!selectedVRNumber}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCust.User_Login_ID__c}"/>
+    				</apex:column>
+					<apex:column headerValue="Email">
+    					<apex:actionSupport action="{!selectRow}" event="onclick" rerender="form" status="csStatus">
+      						<apex:param name="selContId" value="{!thisCust.Id}" assignTo="{!selectedId}" />
+      						<apex:param name="selName" value="{!thisCust.Name}" assignTo="{!selectedName}" />
+      						<apex:param name="selVRNumber" value="{!thisCust.User_Login_ID__c}" assignTo="{!selectedVRNumber}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCust.Email}"/>
+    				</apex:column>
+					<apex:column headerValue="Mailing Post Code">
+    					<apex:actionSupport action="{!selectRow}" event="onclick" rerender="form" status="csStatus">
+      						<apex:param name="selContId" value="{!thisCust.Id}" assignTo="{!selectedId}" />
+      						<apex:param name="selName" value="{!thisCust.Name}" assignTo="{!selectedName}" />
+      						<apex:param name="selVRNumber" value="{!thisCust.User_Login_ID__c}" assignTo="{!selectedVRNumber}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCust.MailingPostalCode}"/>
+    				</apex:column>
+					<apex:column headerValue="Mailing Street">
+    					<apex:actionSupport action="{!selectRow}" event="onclick" rerender="form" status="csStatus">
+      						<apex:param name="selContId" value="{!thisCust.Id}" assignTo="{!selectedId}" />
+      						<apex:param name="selName" value="{!thisCust.Name}" assignTo="{!selectedName}" />
+      						<apex:param name="selVRNumber" value="{!thisCust.User_Login_ID__c}" assignTo="{!selectedVRNumber}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCust.MailingStreet}"/>
+    				</apex:column>
+				</apex:pageBlockTable>
+				<apex:panelGrid columns="2" width="100%">
+	        		<apex:panelGrid columns="6">
+		    			<apex:commandButton status="csStatus" reRender="custSearchResults" value="|<" action="{!csFirst}" disabled="{!!csHasPrevious}" title="First Page"/>
+				        <apex:commandButton status="csStatus" reRender="custSearchResults" value="<" action="{!csPrevious}" disabled="{!!csHasPrevious}" title="Previous Page"/>
+	    			    <apex:commandButton status="csStatus" reRender="custSearchResults" value=">" action="{!csNext}" disabled="{!!csHasNext}" title="Next Page"/>
+     	    			<apex:commandButton status="csStatus" reRender="custSearchResults" value=">|" action="{!csLast}" disabled="{!!csHasNext}" title="Last Page"/>
+           				<apex:outputText >{!(csPageNumber * custSearchPageSize) + 1 - custSearchPageSize}-{!IF((csPageNumber * custSearchPageSize) > custSearchNoOfRecords, custSearchNoOfRecords,(csPageNumber * custSearchPageSize))} of {!custSearchNoOfRecords}</apex:outputText>
+	    	    	    <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+			            	<apex:actionStatus id="csStatus" startText="Updating..." stopText=""/>
+					    </apex:outputPanel>
+					</apex:panelGrid>
+       		    	<apex:panelGrid columns="3" style="float:right">
+						<apex:commandButton action="{!back}" value="Back To Scan Screen"/>
+						<apex:commandButton action="{!clear}" value="Clear Search"/>
+						<apex:commandButton action="{!addNew}" value="Add New"/>
+        	    	</apex:panelGrid>
+       	    	</apex:panelGrid>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<apex:pageBlock id="cmResultsSection" title="Campaign Search Results" rendered="{!selectedId != null}">
+			<apex:pageBlockSection columns="4">
+				<apex:outputText label="Selected Customer" value="{!selectedName} ({!selectedVRNumber})"/>
+				<apex:outputText label="Selected Campaign" value="{!selectedCampaignName}"/>
+    	 		<apex:inputCheckbox label="Show All Village Campaigns" value="{!showAllCampaigns}" title="Tick to show all active village campaigns, untick to show only campaigns linked to the selected customer">
+	    	 		<!-- <apex:actionSupport event="onchange"  action="{!selectRow}" rerender="form"/> -->
+	    	 		<apex:actionSupport event="onclick"  action="{!selectRow}" rerender="form" status="campStatus"/>
+    	 		</apex:inputCheckbox>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection columns="1" rendered="{!renderCMSearch}">
+				<apex:pageBlockTable value="{!campaignSearchResults2}" var="thisCM">
+					<apex:column headerValue="Campaign Name">
+    					<apex:actionSupport event="onclick" rerender="form" status="campStatus">
+      						<apex:param name="selCampaignId" value="{!thisCM.Id}" assignTo="{!selectedCampaignId}" />
+      						<apex:param name="selCampaignName" value="{!thisCM.Name}" assignTo="{!selectedCampaignName}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCM.Name}"/>
+    				</apex:column>
+					<apex:column headerValue="B2C Campaign ID">
+    					<apex:actionSupport event="onclick" rerender="form" status="campStatus">
+      						<apex:param name="selCampaignId" value="{!thisCM.Id}" assignTo="{!selectedCampaignId}" />
+      						<apex:param name="selCampaignName" value="{!thisCM.Name}" assignTo="{!selectedCampaignName}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCM.B2C_Campaign_ID__c}"/>
+    				</apex:column>
+					<apex:column headerValue="Start Date">
+    					<apex:actionSupport event="onclick" rerender="form" status="campStatus">
+      						<apex:param name="selCampaignId" value="{!thisCM.Id}" assignTo="{!selectedCampaignId}" />
+      						<apex:param name="selCampaignName" value="{!thisCM.Name}" assignTo="{!selectedCampaignName}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCM.StartDate}"/>
+    				</apex:column>
+					<apex:column headerValue="End Date">
+    					<apex:actionSupport event="onclick" rerender="form" status="campStatus">
+      						<apex:param name="selCampaignId" value="{!thisCM.Id}" assignTo="{!selectedCampaignId}" />
+      						<apex:param name="selCampaignName" value="{!thisCM.Name}" assignTo="{!selectedCampaignName}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCM.EndDate}"/>
+    				</apex:column>
+					<apex:column headerValue="Total Contacts">
+    					<apex:actionSupport event="onclick" rerender="form" status="campStatus">
+      						<apex:param name="selCampaignId" value="{!thisCM.Id}" assignTo="{!selectedCampaignId}" />
+      						<apex:param name="selCampaignName" value="{!thisCM.Name}" assignTo="{!selectedCampaignName}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCM.NumberOfContacts}"/>
+    				</apex:column>
+					<apex:column headerValue="Total Responses">
+    					<apex:actionSupport event="onclick" rerender="form" status="campStatus">
+      						<apex:param name="selCampaignId" value="{!thisCM.Id}" assignTo="{!selectedCampaignId}" />
+      						<apex:param name="selCampaignName" value="{!thisCM.Name}" assignTo="{!selectedCampaignName}" />
+    					</apex:actionSupport>                               
+    					<apex:outputText value="{!thisCM.NumberOfResponses}"/>
+    				</apex:column>
+				</apex:pageBlockTable>
+        		<apex:panelGrid columns="6">
+		    		<apex:commandButton status="campStatus" reRender="cmResultsSection" value="|<" action="{!campFirst}" disabled="{!!campHasPrevious}" title="First Page"/>
+				    <apex:commandButton status="campStatus" reRender="cmResultsSection" value="<" action="{!campPrevious}" disabled="{!!campHasPrevious}" title="Previous Page"/>
+	    			<apex:commandButton status="campStatus" reRender="cmResultsSection" value=">" action="{!campNext}" disabled="{!!campHasNext}" title="Next Page"/>
+    	    		<apex:commandButton status="campStatus" reRender="cmResultsSection" value=">|" action="{!campLast}" disabled="{!!campHasNext}" title="Last Page"/>
+					<apex:outputText >{!(campPageNumber * campSearchPageSize) + 1 - campSearchPageSize}-{!IF((campPageNumber * campSearchPageSize) > campSearchNoOfRecords, campSearchNoOfRecords,(campPageNumber * campSearchPageSize))} of {!campSearchNoOfRecords}</apex:outputText>
+    	    	    <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+		            	<apex:actionStatus id="campStatus" startText="Updating..." stopText=""/>
+				    </apex:outputPanel>
+				</apex:panelGrid>
+			</apex:pageBlockSection>
+			<apex:pageBlockButtons location="bottom">
+				<apex:commandButton action="{!processRedemption}" value="Process Redemption" disabled="{!selectedCampaignId = null}"/>
+			</apex:pageBlockButtons>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,256 @@
+<apex:page standardController="Points_Transaction__c" extensions="EtihardEarnPointsController">
+<apex:include pageName="Ponts_Conversion_JS" /> 
+
+    <body>
+     <apex:include pageName="Points_Provider_Selection" /> 
+        <apex:form >
+        <h3 style="color:red"><apex:outputText value="{!ticUserRetailCenterError}" /></h3>
+        
+        <table width="100%">
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td colspan="2">
+                                <h4 style="font-weight: bold">
+                                    <apex:outputText value="Etihad Earn Points" />
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr width="20%">
+                            <td><apex:outputText value="GRP Number *" style="font-weight: bold"/>
+                            </td>
+                            <td>
+                                 <apex:inputText value="{!grpNumber}" id="grpNumber" disabled="" tabindex="1"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><apex:outputText value="First Name *"  style="font-weight: bold"/>
+                            </td>
+                            <td>
+                                <apex:inputText value="{!grpFirstName}" id="grpFirstName" disabled="" tabindex="1"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><apex:outputText value="Last Name *"  style="font-weight: bold"/>
+                            </td>
+                            <td>
+                                <apex:inputText value="{!grpLastName}" id="grpLastName" disabled="" tabindex="1"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <apex:commandButton action="{!resetAll}"
+                                        value=" - Clear All - " 
+                                        id="clearAll" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="19%" >
+                    
+                    <apex:dataTable id="verifyErrors" style="color:red" value="{!customerVerifyErrors}"
+                                        var="anError" rendered="{!hasGRPVerifyError}" width="100%">
+
+                                        <apex:column >
+                                            <apex:facet name="header">
+                                                <apex:outputText value="Errors !" />
+                                            </apex:facet>
+                                            <apex:outputText value="{!anError}" style="color:red">
+                                            </apex:outputText>
+                                        </apex:column>
+                                    </apex:dataTable>
+                    
+                </td>
+                <td rowspan="3" width="19%">
+                        
+                        <!-- Tip -->
+                        <b>Tip!</b><br></br>
+                            Carry out points credit for Etihad Guests. Please provide customer First Name, Last Name and GRP Number. 
+                                <p></p>
+                                Use the Points Conversion section  to Add up, remove transaction values and compute the Points.
+                        
+                </td>
+        </tr>
+        <tr>
+            <td height="20px"></td>
+        </tr>
+        <tr>
+            <td>
+                
+                <apex:pageBlock rendered="{!verifySuccessful}">
+                        <table>
+                            <tr>
+                                <td><apex:outputText value="Total Amounts Value : " />
+                                </td>
+                                <td>
+                                    <apex:outputText value="{!totalTransAmountValue}" style="font-weight: bold" id="totalTransValue"/>
+                                </td>
+                                <td><apex:outputText value="Total Points accrued : "/>
+                                </td>
+                                <td>
+                                    <apex:outputText value=" BASE : "/>
+                              <apex:outputText value="{!totalPointsAccrued}" style="font-weight: bold" id="totalBasePoints"/> 
+                                    <apex:outputText value=" BONUS : " rendered="{!renderBONUS_POINTS_RESULTS}" style="font-weight: bold;color:red"/>
+                                    <apex:outputText value="{!totalPointsAccruedBonus}" rendered="{!renderBONUS_POINTS_RESULTS}" id="totalBonusPoints" style="font-weight: bold;color:red"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%" cellspacing="3" cellpadding="3">
+                            <tr>
+                                <td width ="11%">
+                                    <apex:outputText value="Points Type *" />
+                                </td>
+                                <td  width ="15%" align="left">
+                                    <apex:inputField value="{!dummyPoints_Transaction.Promo_Type__c}" id="transPromoTypeInputField" taborderhint="1">
+                                        <apex:actionSupport event="onchange"  action="{!doRenderBonusField}" />
+                                    </apex:inputField>
+                                </td>
+                                <td align="right">
+                                    <apex:outputText value="Bonus Rate" rendered="{!renderBonusField}" />
+                                </td>
+                                <td align="left">
+                                        <apex:inputText rendered="{!renderBonusField}" value="{!bonusConversionValue}" id="bonusConversionValueInput" size="2"  tabindex="3" >
+                                        </apex:inputText>
+                                </td>
+                                <td align="right">
+                                         <!--
+                                        <input type="text" id="pinDateDown " style="width:0.05px;height:0.05px"/> 
+                                        <apex:outputText value="Date" />
+                                        -->
+                                </td>
+                                <td align="left">
+                                            <!--
+                                                <apex:inputField value="{!dummyPoints_Transaction.Activity_Date__c}" taborderhint="99" id="activityDate">
+                                                </apex:inputField>
+                                            -->
+                                </td>
+                                <td width ="25%" align="right">
+                                    <apex:commandButton action="{!doConversion}"
+                                        value=" ReCalculate " id="Convert" />   
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <tr>
+                                <td><apex:outputText value="Value" />
+                                </td>
+                                <td><apex:inputText value="{!transAmountValueString}"
+                                        id="anAmountValue"  tabindex="5"/>
+                                </td>
+                                <td>
+                                    <!-- 
+                                        <apex:inputField value="{!dummyPoints_Transaction.Promo_Type__c}" id="transPromoTypeInputField">
+                                        <apex:actionSupport event="onchange"  action ="{!doRenderBonusField}"/>
+                                    </apex:inputField>
+                                     -->
+                                </td>
+                                <td>
+                                    <!--
+                                        <apex:inputText rendered="{!renderBonusField}" value="{!bonusConversionValue}" size="2" >
+                                        </apex:inputText> 
+                                     -->
+                                </td>
+                                <td><apex:commandButton action="{!doAddValue}"
+                                        value="- Add -" id="addUp" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!--  Old data table  -->
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <tr>
+                                <td colspan="2" width="100%">
+                                    <!-- Transaction Item Listing --> 
+                                        <apex:dataTable id="transactionItems" value="{!transactionItemsList}"
+                                        var="transItem" rendered="{!hasRowsToRender}" width="100%">
+
+                                        <apex:column >
+                                            <apex:facet name="header">
+                                                <apex:outputText value="Value" />
+                                            </apex:facet>
+                                            <apex:outputText value="{0,Number,###,###.00}">
+                                                <apex:param value="{!transItem.itemValue}" />
+                                            </apex:outputText>
+                                        </apex:column>
+                                        
+                                        <!--  
+                                                <apex:column>
+                                                <apex:facet name="header">
+                                                    <apex:outputText value="Type" />
+                                                </apex:facet>
+                                                <apex:outputText value="{!transItem.itemTypeBasicBonus}" />
+                                            </apex:column>
+                                            <apex:column>
+                                                <apex:facet name="header">
+                                                    <apex:outputText value="Points" />
+                                                </apex:facet>
+                                                <apex:outputText value="{!transItem.itemPoints}" />
+                                            </apex:column>
+                                        
+                                         -->
+                                        <apex:column >
+                                            <apex:facet name="header">
+                                                <apex:outputText value="Remove" />
+                                            </apex:facet>
+                                            <apex:inputCheckbox value="{!transItem.removeItem}" />
+                                        </apex:column>
+                                        </apex:dataTable>                               </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    
+                                            <apex:commandButton action="{!doTransactionSubmit}"
+                                        value="Submit Transactions" rendered="{!hasRowsToRender}"
+                                        id="submitTrans"  onclick="manageTransactionSubmit('{!$Component.confirmTransaction}','{!$Component.userDateAndTime}','{!totalTransAmountValue}','{!totalPointsAccrued}','{!totalPointsAccruedBonus}','{!$Component.activityDate}','{!$Component.bonusConversionValueInput}')"/>-
+                                    
+                                </td>
+                                <td>
+                                    
+                                        <apex:commandButton action="{!doRemoveTransaction}"
+                                        value="Remove Transactions" rendered="{!hasRowsToRender}"
+                                        id="removeTrans" />
+                                    
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:pageBlock>
+                
+            </td>
+            <td>
+                    
+                    <apex:dataTable id="conversionErrors" style="color:red" value="{!errorMessageConversion}"
+                                        var="anError" rendered="{!hasConversionorAddError}" width="100%">
+
+                                        <apex:column >
+                                            <apex:facet name="header">
+                                                <apex:outputText value="Errors !" />
+                                            </apex:facet>
+                                            <apex:outputText value="{!anError}" style="color:red">
+                                            </apex:outputText>
+                                    </apex:column>
+                                </apex:dataTable>
+                    
+            </td>
+            <td>
+        
+            </td>
+        </tr>
+        <tr>
+            <td height="20px"></td>
+        </tr>
+    </table>
+    
+    <apex:inputHidden value="{!userCurrentDateAsString}" id="userDateAndTime"/>
+     <apex:inputHidden value="{!confirmTransactionSubmit}" id="confirmTransaction"/>
+    
+    </apex:form>
+        <apex:include pageName="ProcessingScreen"/> 
+    </body>
+
+</apex:page>

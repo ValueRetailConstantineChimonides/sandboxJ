@@ -1,0 +1,35 @@
+<apex:page StandardController="Points_Provider__c" extensions="PointsProviderSelectionController">
+<!-- Begin Default Content REMOVE THIS -->
+<apex:sectionHeader title="Earn Points" />
+<apex:form >
+<table>
+    <tr>
+        <td>
+            <apex:outputText value="Type" style="font-weight: bold"/>
+         
+        </td>
+        <td>
+             <apex:inputField value="{!dummyProvider.Provider_Type__c}" >
+                <apex:actionSupport event="onchange"  action="{!doSelectProviderType}"/>
+             </apex:inputField>
+        </td>
+        <td>
+            <apex:outputText value="Provider" style="font-weight: bold"/>
+        </td>
+        <td>
+            <apex:selectList value="{!selectedProvider}" multiselect="false" size="1" styleclass="" id="selectProviderList">
+                
+                <apex:actionSupport event="onchange" action="{!navigateToPtoviderPage}"/>
+               
+                <apex:selectOptions value="{!pointsProviderOptions}"/>
+            </apex:selectList>
+        </td>
+        <td> 
+            <apex:commandButton action="{!navigateToPtoviderPage}" value="Go" id="theButton"/>
+        </td>
+    </tr>
+</table>
+</apex:form>
+
+<!-- End Default Content REMOVE THIS -->
+</apex:page>
