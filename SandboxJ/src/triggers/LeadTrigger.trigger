@@ -1,6 +1,6 @@
 /*
 ##Name: LeadTrigger 
-##Created by: Ian John Womack
+##Created by: Ian John Womack - Git direct update
 ##Date: 12/11/2013
 ##Purpose: Upon Lead conversion, of a MICE lead, create a Group_Booking_Information__c record.
 */
