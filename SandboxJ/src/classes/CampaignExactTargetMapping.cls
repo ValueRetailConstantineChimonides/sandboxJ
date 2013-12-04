@@ -1,0 +1,54 @@
+public with sharing class CampaignExactTargetMapping {
+	
+	
+	
+	public static final Map<String, String> CAMPAIGN_MAP = new Map<String, String>();
+ 	static {
+ 		initializeMap();
+ 	}
+ 	
+ 	public static void initializeMap() {
+ 	/*	
+ 		//Ad-hoc Campaign Mapping
+ 		CAMPAIGN_MAP.put('701T0000000BKui', '3767563');
+ 		CAMPAIGN_MAP.put('701T0000000BKvA', '3767561');
+ 		CAMPAIGN_MAP.put('701T0000000BKv5', '3767564');
+ 		CAMPAIGN_MAP.put('701T0000000BKtf', '3767566');
+ 		CAMPAIGN_MAP.put('701T0000000BKvK', '3767568');
+ 		CAMPAIGN_MAP.put('701T0000000BKuj', '3767569');
+ 		CAMPAIGN_MAP.put('701T0000000BKvP', '3767574');
+ 		CAMPAIGN_MAP.put('701T0000000BKv6', '3767578');
+ 		
+ 	*/	
+ 		
+ 		//Web service Campaign Mapping
+ 		/*CAMPAIGN_MAP.put('70120000000N46x', '3796949');
+ 		CAMPAIGN_MAP.put('70120000000N46s', '3796945');
+ 		CAMPAIGN_MAP.put('70120000000N46n', '3797909');
+ 		CAMPAIGN_MAP.put('70120000000N4E9', '3797913');
+ 		CAMPAIGN_MAP.put('70120000000N46i', '3797378');
+ 		CAMPAIGN_MAP.put('70120000000N4E4', '3797902');
+ 		CAMPAIGN_MAP.put('70120000000N477', '3797331');
+ 		CAMPAIGN_MAP.put('70120000000N47C', '3797330');
+ 		CAMPAIGN_MAP.put('70120000000N47H', '3797335');
+ 		CAMPAIGN_MAP.put('70120000000N49T', '3797327');
+ 		CAMPAIGN_MAP.put('70120000000N49d', '3796103');
+ 		CAMPAIGN_MAP.put('70120000000N49Y', '3795630');
+ 		CAMPAIGN_MAP.put('70120000000N4AC', '3797905');
+ 		CAMPAIGN_MAP.put('70120000000N4AH', '3797911');
+ 		CAMPAIGN_MAP.put('70120000000N4A2', '3797908'); 		
+ 		CAMPAIGN_MAP.put('70120000000N4AM', '3797912');
+ 		CAMPAIGN_MAP.put('70120000000N49i', '3798076');
+ 		CAMPAIGN_MAP.put('70120000000N49n', '3798530');*/
+ 		CAMPAIGN_MAP.put('70120000000N4AW', '3767507');  /* '3802932' */
+ 		/*CAMPAIGN_MAP.put('70120000000N4Ag', '3796186');*/
+ 		
+ 	}
+ 	
+ 	static testMethod void testBrandTransactionAfter() {
+ 		//Called to apply test coverage
+ 		initializeMap();
+ 	}
+ 
+ 
+}
