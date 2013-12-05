@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ScanBizCards Enterprise</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <namespacePrefix>scanbizcards</namespacePrefix>
+    <types>
+        <members>isLicensed</members>
+        <members>isLicensedTest</members>
+        <name>ApexClass</name>
+    </types>
+    <version>28.0</version>
+</Package>

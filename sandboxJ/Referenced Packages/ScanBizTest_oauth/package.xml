@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ScanBizTest_oauth</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <modules>
+        <module>
+            <label>ScanBizTest_oauth</label>
+            <moduleType>connected</moduleType>
+            <name>ScanBizTest_oauth</name>
+            <types>
+                <members>ScanBizTest_oauth_devConfig</members>
+                <name>ConnectivityDevConfigMetadata</name>
+            </types>
+            <types>
+                <members>scanbizcards__ScanBizTest_oauth</members>
+                <name>Module</name>
+            </types>
+            <version>2.0</version>
+        </module>
+    </modules>
+    <namespacePrefix>scanbizcards</namespacePrefix>
+    <version>28.0</version>
+</Package>
