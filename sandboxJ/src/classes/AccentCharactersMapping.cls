@@ -1,7 +1,7 @@
 /*
 ENG-0711-45
 contains a map of accent characters to non-accent counterparts
-test comment from Constantine's Github 2 
+test comment from Constantine's Github 3 
 */
 public class AccentCharactersMapping {
 	public static Map<String, String> CHARACTER_MAP = new Map<String, String>();
